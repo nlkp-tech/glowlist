@@ -42,7 +42,7 @@ return (
                     kategori.map((item) => (
                       <tr key={item.id_kategori}>
                         <td>{item.id_kategori}</td>
-                        <td>{item.nama_kategori}</td>
+                        <td>{item.kategori}</td>
                       </tr>  
                     ))
                 ) : (

@@ -38,6 +38,23 @@ app.get('/produk', (req, res) => {
     });
 });
 
+app.post('/produk', (req, res) => {
+    const { judul, deskripsi, harga, id_kategori } = req.body;
+
+    if (!deskripsi) {
+        return res.status(400).json({ message: 'deskripsi wajib diisi'});
+    }
+
+    const sql = `INSERT INTO produk (judul, deskripsi, harga, id_kategori, tgl_input) VALUES (?, ?, ?, ?, NOW())`;
+    db.query(sql, [judul, deskripsi, harga, id_kategori], (err, results) => {
+        if (err) return res.status(500).json({ error: err.sqlMessage });
+        res.json({
+            message: 'Produk berhasil ditambahkan!',
+            id_produk: results.insertId
+        });
+    });
+});
+
 app.get('/kategori', (req, res) => {
     const sql = 'SELECT * FROM kategori';
     db.query(sql, (err, results) => {

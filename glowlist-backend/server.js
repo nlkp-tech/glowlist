@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const mysql2 = require('mysql2');
 
 const db = mysql2.createConnection({
@@ -18,6 +19,7 @@ db.connect(err => {
 })
 const PORT = 5000;
 
+app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {

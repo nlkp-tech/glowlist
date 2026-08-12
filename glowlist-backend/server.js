@@ -55,6 +55,21 @@ app.post('/produk', (req, res) => {
     });
 });
 
+app.put('/produk/:id_produk', (req, res) => {
+    const { id_produk } = req.params;
+    const { judul, deskripsi, harga, id_kategori } = req.body;
+
+    if (!judul || !harga) {
+        return res.status(400).json({ message: 'judul dan harga wajib diisi '});
+    }
+
+    const sql = 'UPDATE produk SET judul=?, deskripsi=?, harga=?, id_kategori=? WHERE id_produk=?';
+    db.query(sql, [judul, deskripsi, harga, id_kategori, id_produk], (err, results) => {
+        if (err) return res.status(500).json({ error: err.sqlMessage });
+        res.json({ message: 'Produk berhasil diupdate' });
+    });
+});
+
 app.get('/kategori', (req, res) => {
     const sql = 'SELECT * FROM kategori';
     db.query(sql, (err, results) => {

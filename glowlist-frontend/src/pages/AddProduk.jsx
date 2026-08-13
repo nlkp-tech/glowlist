@@ -21,7 +21,7 @@ export default function AddProduk() {
             } catch (err) {
                 console.error("Gagal mengambil kategori:", err);
             }
-        };
+        }; 
 
         getKategori();
     }, []);

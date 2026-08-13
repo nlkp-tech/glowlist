@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 
 export default function Produk() {
+    const navigate = useNavigate();
     const [produk, setProduk] = useState([]);
     const [loading, setLoading] = useState(true);
 
@@ -21,6 +22,29 @@ export default function Produk() {
         getProduk();
     }, []);
 
+    const handleDelete = async (id) => {
+        if (window.confirm("Yakin ingin menghapus produk ini?")) {
+            try {
+                const res = await fetch(`http://localhost:5000/produk/${id}`, {
+                    method: "DELETE",
+                });
+                if (res.ok) {
+                    alert("produk berhasil dihapus");
+                    getProduk();
+                } else {
+                    alert("Gagal mengahpus produk");
+                }
+                } catch (err) {
+                    console.error("Error saat delete:", err);
+                    alert("Terjadi kesalahan saat menghapus data");
+            }
+        }
+    };
+
+    const handleEdit = (id) => {
+        navigate(`/produk/edit/${id}`);
+    };
+
 if (loading) {
     return <div className="container mt-4">Sedang memuat data...</div>;
 }
@@ -29,6 +53,7 @@ return (
     <div className="container mt-4">
         <div className="d-flex justify-content-between align-items-center mb-3">
             <h2>Daftar Produk Glowlist</h2>
+            <Link to="/produk/tambah" className="btn btn-primary">+ Tambah produk</Link>
         </div>
 
         <table className="table table-bordered table-striped">
@@ -38,6 +63,7 @@ return (
                     <th>Judul</th>
                     <th>Deskripsi</th>
                     <th>Harga</th>
+                    <th>Aksi</th>
                 </tr>
             </thead>
             <tbody>
@@ -48,6 +74,20 @@ return (
                         <td>{item.judul}</td>
                         <td>{item.deskripsi}</td>
                         <td>{item.harga}</td>
+                        <td>
+                            <button
+                                className="btn btn-warning btn-sm me-2"
+                                onClick={() => handleEdit(item.id_produk)}
+                                >
+                                    Edit
+                                </button>
+                            <button
+                                className="btn btn-danger btn-sm"
+                                onClick={() => handleDelete(item.id_produk)}
+                                >
+                                    Delete
+                                </button>
+                        </td>
                       </tr>  
                     ))
                 ) : (

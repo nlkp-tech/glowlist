@@ -12,6 +12,7 @@ export default function EditProduk() {
     });
 
     const [loading, setLoading] = useState(true);
+    const [kategori, setKategori] = useState([]);
 
     useEffect(() => {
         fetch(`http://localhost:5000/produk/${id}`)
@@ -20,7 +21,14 @@ export default function EditProduk() {
                 setFormData(data[0]);
                 setLoading(false);
             })
-            .catch((err) => console.error(err));
+            .catch((err) => console.error("eerror produk:", err));
+
+            fetch("http://localhost:5000/kategori")
+            .then((res) => res.json())
+            .then((data) => {
+                setKategori(data);
+            })
+            .catch((err) => console.error("Error kategori:", err));
     }, [id]);
 
 const handleChange = (e) => {
@@ -56,6 +64,50 @@ return (
                     className="form-control"
                 />
             </div>
+
+             <div className="mb-3">
+                    <label className="form-label">Deskripsi</label>
+                    <input
+                        type="text"
+                        name="deskripsi"
+                        value={formData.deskripsi}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="Masukkan deskripsi produk"
+                        required
+                    />
+                </div>
+
+                 <div className="mb-3">
+                    <label className="form-label">Harga</label>
+                    <input
+                        type="number"
+                        name="harga"
+                        value={formData.harga}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="Masukkan harga produk"
+                        required
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <label className="form-label">Kategori</label>
+                    <select
+                        name="id_kategori"
+                        value={formData.id_kategori}
+                        onChange={handleChange}
+                        className="form-select"
+                        required
+                    >
+                        <option value="">-- pilih kategori --</option>
+                        {kategori.map((item) => (
+                            <option key={item.id_kategori} value={item.id_kategori}>
+                                {item.kategori}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             <button type="submit" className="btn btn-success me-2">
                 Simpan perubahan
             </button>

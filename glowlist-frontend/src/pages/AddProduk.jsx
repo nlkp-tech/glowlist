@@ -10,6 +10,7 @@ export default function AddProduk() {
         id_kategori: "",
     });
 
+    const [file, setFile] = useState(null);
     const [kategori, setKategori] = useState([]);
 
     useEffect(() => {
@@ -34,12 +35,32 @@ export default function AddProduk() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (file && file.size > 2 * 1024 * 1024) {
+            alert("Ukuran file terlalu besar, maksimal 2MB");
+            return;
+        }
+
+        const token = localStorage.getItem("token");
+
+        const data = new FormData();
+        data.append("judul", formData.judul);
+        data.append("deskripsi", formData.deskripsi);
+        data.append("harga", formData.harga);
+        data.append("id_kategori", formData.id_kategori);
+        if (file) {
+            data.append("file", file);
+        }
+
         try {
             const res = await fetch("http://localhost:5000/produk", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(formData),
+                headers: { Authorization: `bearer ${token}`, },
+                body: data,
             });
+
+            const result = await res.json();
+
             if (res.ok) {
                 alert("Produk berhasil ditambahkan");
                 navigate("/produk");
@@ -110,6 +131,17 @@ export default function AddProduk() {
                             </option>
                         ))}
                     </select>
+                </div>
+
+                <div className="mb-3">
+                    <label className="form-label">Foto Produk</label>
+                    <input
+                        type="file"
+                        name="file"
+                        accept="image/*"
+                        className="form-control"
+                        onChange={(e) => setFile(e.target.files[0])}
+                    />
                 </div>
 
                 <button type="submit" className="btn btn-success">

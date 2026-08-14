@@ -174,10 +174,14 @@ app.put('/produk/:id_produk', authJWT, uploads.single('file'), (req, res) => {
     db.query(cekSql, [id_produk], (err, result) => {
         if (err) return res.status(500).json({ error: err.sqlMessage });
 
+         if (result.affectedRows === 0) {
+                return res.status(404).json({ message: 'produk tidak ditemukan' });
+            }
+
         const nama_file = req.file ? req.file.filename : result[0].nama_file;
 
-        const sql = 'UPDATE produk SET judul=?, deskripsi=?, harga=?, id_kategori=? WHERE id_produk=?';
-        db.query(sql, [judul, deskripsi, harga, id_kategori, id_produk], (err, result) => {
+        const sql = 'UPDATE produk SET judul=?, deskripsi=?, harga=?, id_kategori=?, nama_file=? WHERE id_produk=?';
+        db.query(sql, [judul, deskripsi, harga, id_kategori, nama_file, id_produk], (err, result) => {
             if (err) return res.status(500).json({ error: err.sqlMessage });
 
             if (result.affectedRows === 0) {

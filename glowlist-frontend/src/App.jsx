@@ -22,7 +22,7 @@ export default function App(){
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={<ProtectedRoute><Layout /></ProtectedRoute>}>
           <Route index element={<Home />}/>
           <Route path="produk" element={<Produk />}/>
           <Route path="kategori" element={<Kategori />}/>

@@ -37,7 +37,7 @@ export default function EditProduk() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (window.confirm("Yakin ingin menyimpan perubahan ini")) {
+        if (window.confirm("Yakin ingin menyimpan perubahan ini?")) {
             try {
                 const res = await fetch(`http://localhost:5000/produk/${id}`, {
                     method: "PUT",
@@ -60,72 +60,72 @@ export default function EditProduk() {
             }
         }
     };
-        if (loading) {
-            return <div className="container mt-4">Loading...</div>;
-        };
+    if (loading) {
+        return <div className="container mt-4">Loading...</div>;
+    };
 
-        return (
-            <div className="container mt-4">
-                <h2>Edit produk</h2>
-                <form onSubmit={handleSubmit} className="mt-3">
-                    <div className="mb-3">
-                        <label className="form-label">Judul</label>
-                        <input
-                            type="text"
-                            name="judul"
-                            value={formData.judul}
-                            onChange={handleChange}
-                            className="form-control"
-                        />
-                    </div>
+    return (
+        <div className="container mt-4">
+            <h2>Edit produk</h2>
+            <form onSubmit={handleSubmit} className="mt-3">
+                <div className="mb-3">
+                    <label className="form-label">Judul</label>
+                    <input
+                        type="text"
+                        name="judul"
+                        value={formData.judul}
+                        onChange={handleChange}
+                        className="form-control"
+                    />
+                </div>
 
-                    <div className="mb-3">
-                        <label className="form-label">Deskripsi</label>
-                        <input
-                            type="text"
-                            name="deskripsi"
-                            value={formData.deskripsi}
-                            onChange={handleChange}
-                            className="form-control"
-                            placeholder="Masukkan deskripsi produk"
-                            required
-                        />
-                    </div>
+                <div className="mb-3">
+                    <label className="form-label">Deskripsi</label>
+                    <input
+                        type="text"
+                        name="deskripsi"
+                        value={formData.deskripsi}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="Masukkan deskripsi produk"
+                        required
+                    />
+                </div>
 
-                    <div className="mb-3">
-                        <label className="form-label">Harga</label>
-                        <input
-                            type="number"
-                            name="harga"
-                            value={formData.harga}
-                            onChange={handleChange}
-                            className="form-control"
-                            placeholder="Masukkan harga produk"
-                            required
-                        />
-                    </div>
+                <div className="mb-3">
+                    <label className="form-label">Harga</label>
+                    <input
+                        type="number"
+                        name="harga"
+                        value={formData.harga}
+                        onChange={handleChange}
+                        className="form-control"
+                        placeholder="Masukkan harga produk"
+                        required
+                    />
+                </div>
 
-                    <div className="mb-3">
-                        <label className="form-label">Kategori</label>
-                        <select
-                            name="id_kategori"
-                            value={formData.id_kategori}
-                            onChange={handleChange}
-                            className="form-select"
-                            required
-                        >
-                            <option value="">-- pilih kategori --</option>
-                            {kategori.map((item) => (
-                                <option key={item.id_kategori} value={item.id_kategori}>
-                                    {item.kategori}
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-                    <button type="submit" className="btn btn-success me-2">
-                        Simpan perubahan
-                    </button>
-                </form>
-            </div>
-        )
-    }
+                <div className="mb-3">
+                    <label className="form-label">Kategori</label>
+                    <select
+                        name="id_kategori"
+                        value={formData.id_kategori}
+                        onChange={handleChange}
+                        className="form-select"
+                        required
+                    >
+                        <option value="">-- pilih kategori --</option>
+                        {kategori.map((item) => (
+                            <option key={item.id_kategori} value={item.id_kategori}>
+                                {item.kategori}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+                <button type="submit" className="btn btn-success me-2">
+                    Simpan perubahan
+                </button>
+            </form>
+        </div>
+    )
+}
